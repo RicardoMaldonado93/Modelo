@@ -30,5 +30,8 @@ $app->group('/cds', function(){
     $this->put('/modificarUnCD/{id}', \CDApi::class . ':ModificarUnCD');
 });
 
+$app->group('/login', function (){
+    $this->post('/',\)
+})
 $app->run();
 ?>
