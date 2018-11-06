@@ -36,7 +36,7 @@ class CDApi extends CD implements IApi{
         $ID = $args['id'];
         $unCD = CD::borrarCD($ID);
         $newResponse = $response->withStatus(200);
-        return $newResponse;
+        return $newResponse;:
     }
 
     public static function ModificarUnCD($request, $response, $args){
