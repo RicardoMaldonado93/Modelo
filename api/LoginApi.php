@@ -12,10 +12,10 @@ class LoginApi extends Login implements IApi2{
         $user = $datos['nombre'];
         $pass = $datos['pass'];
         $login = Login::loguear($user, $pass);
-        
+    
         
         if( $login != NULL )
-        
+
             $newResponse = $response->withJson(Token::crearToken($login),200);
         else
             $newResponse = $response->withJson("USUARIO NO VALIDO",404);
