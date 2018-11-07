@@ -5,6 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require_once './vendor/autoload.php';
 require_once './api/CDApi.php';
+require_once './api/LoginApi.php';
 
 
 $config['displayErrorDetails'] = true;
@@ -31,7 +32,7 @@ $app->group('/cds', function(){
 });
 
 $app->group('/login', function (){
-    $this->post('/',\)
-})
+    $this->post('/', \LoginApi::class . ':Login');
+});
 $app->run();
 ?>

@@ -1,18 +1,19 @@
 <?php
 
-require_once "./clases/CD.php";
-require_once "./clases/IApi.php";
+require_once "./clases/Login.php";
+require_once "./clases/IApi2.php";
 
-class LoginApi extends Login implements IApi{
+class LoginApi extends Login implements IApi2{
 
     public static function Login( $request, $response, $args){
         
         $datos = $request->getParsedBody();
         $user = $datos['nombre'];
         $pass = $datos['pass'];
-        $login = Login::logIN($user, $pass);
-        $newResponse = $response->withStatus(200);
+        $login = Login::loguear($user, $pass);
+        $newResponse = $response->withJson($login,200);
         return $newResponse;
     }
-}
+
+  }
 ?>
