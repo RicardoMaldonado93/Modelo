@@ -28,7 +28,7 @@ class CD {
             $consulta = $objetoAccesoDato->RetornarConsulta("select * from cds" );
             $consulta->execute();
 
-            $Lista = $consulta->fetchAll(PDO::FETCH_CLASS, 'CD');
+            $Lista = $consulta->fetchAll(PDO::FETCH_CLASS, 'CD'); // o $Lista = $consulta->fetchObject(__CLASS__);
 
 
             /*foreach( $Lista as $cd)

@@ -1,7 +1,7 @@
 <?php
 
 require_once './clases/AccesoDatos.php';
-require_once './clases/Token.php';
+
 
 class Login{
 
@@ -13,14 +13,10 @@ class Login{
             $consulta->bindValue(':pass',$pass, PDO::PARAM_STR);
             $consulta->execute();
             $Lista = $consulta->fetchAll(PDO::FETCH_CLASS, 'Login');
-            if( $Lista != NULL){
             
-                $JWT= Token::crearToken($Lista);
-               
-                var_dump($JWT);
-            }
-            else
-                echo "No se encuentra registro";
+            return $Lista;
+              
+ 
         
             }
         catch (PDOException $e){
