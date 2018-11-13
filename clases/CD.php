@@ -25,7 +25,7 @@ class CD {
         try{
 
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-            $consulta = $objetoAccesoDato->RetornarConsulta("select * from cds" );
+            $consulta = $objetoAccesoDato->RetornarConsulta('CALL traerCDS()');//("select * from cds" );
             $consulta->execute();
 
             $Lista = $consulta->fetchAll(PDO::FETCH_CLASS, 'CD'); // o $Lista = $consulta->fetchObject(__CLASS__);
