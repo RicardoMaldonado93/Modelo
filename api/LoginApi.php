@@ -16,9 +16,10 @@ class LoginApi extends Login implements IApi2{
         
         if( $login != NULL ){
             
-            $newResponse = $response->withHeader('Content-Type', 'application/json')
-                                    ->write(json_encode(Token::crearToken($login)));//withJson(Token::crearToken($login),200);
-            $newResponse = $next( $request, $response);
+            //$newResponse = $response->withAddedHeader(json_encode(Token::crearToken($login)), 'token');//withJson(Token::crearToken($login),200);
+            $newResponse = $response->withAddedHeader('asd', 'token');//withJson(Token::crearToken($login),200);
+
+            $newResponse= $next( $request, $response);
         }
         else
             $newResponse = $response->withJson("USUARIO NO VALIDO",404);
@@ -26,17 +27,8 @@ class LoginApi extends Login implements IApi2{
         return $newResponse;
     }
 
-    public function HabilitarCORS8080($request, $response, $next) {
-		/*
-		al ingresar no hago nada
-		*/
-		 $response = $next($request, $response);
-        // $response->getBody()->write('<p>habilitado HabilitarCORS8080</p>');
-        var_dump($response);
-   		 return $response
-            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:8080')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-	}
+    public static function ValidarUsr( $request, $response, $next){
+         var_dump($response->getHeader('token'));
+    }
   }
 ?>

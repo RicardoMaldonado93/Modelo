@@ -19,11 +19,11 @@ $app->group('/cds', function(){
 
     $this->get('/traerUnCD/{id}', \CDApi::class . ':TraerUnCD');
 
-    $this->post('/agregarUnCD', \CDApi::class . ':AgregarUnCD');
+    $this->post('/agregarUnCD', \CDApi::class . ':AgregarUnCD')->add(LoginApi::class . ':ValidarUsr');
 
     $this->delete('/borrarUnCD/{id}', \CDApi::class . ':BorrarUnCD');
     
     $this->put('/modificarUnCD/{id}', \CDApi::class . ':ModificarUnCD');
-})->add( $app->post(('/login'),LoginApi::class . ':Login'));
+})->add(LoginApi::class . ':Login');
 $app->run();
 ?>
