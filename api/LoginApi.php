@@ -30,7 +30,17 @@ class LoginApi extends Login implements IApi2{
     }
 
     public static function ValidarUsr( $request, $response, $next){
-         var_dump($response->getHeader('token'));
+        
+        $dato = $request->getHeader('token');
+        $token = $dato[0];
+    
+        
+        if( Token::ObtenerData($token)[0]->{'nombre'} != 'admin' )
+            $nresponse = $response->withJson('error',404);
+        else
+            $nresponse = $next($request, $response);
+
+        return $nresponse;
     }
   }
 ?>

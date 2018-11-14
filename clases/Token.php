@@ -63,7 +63,7 @@ class Token{
     {
         return JWT::decode(
             $token,
-            self::$claveSecreta,
+            self::$key,
             self::$tipoEncriptacion
         );
     }
@@ -71,7 +71,7 @@ class Token{
     {
         return JWT::decode(
             $token,
-            self::$claveSecreta,
+            self::$key,
             self::$tipoEncriptacion
         )->data;
     }

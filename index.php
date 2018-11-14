@@ -31,25 +31,20 @@ $logIn = function($request, $response, $next){
             return $nresponse;
 };
 
-/*$nivel = function($response, $request, $next){
-
-        $token = $response->getHeader('token');
-    
-        if( Token::class . )
-        
-};*/
 
 $app->group('/cds', function(){
+
+   
 
     $this->get('/traerTodos', \CDApi::class . ':TraerTodos');
 
     $this->get('/{id}', \CDApi::class . ':TraerUnCD');
 
-    $this->post('/', \CDApi::class . ':AgregarUnCD');
+    $this->post('/', \CDApi::class . ':AgregarUnCD')->add(\LoginApi::class . ':ValidarUsr');
 
-    $this->delete('/', \CDApi::class . ':BorrarUnCD');
+    $this->delete('/', \CDApi::class . ':BorrarUnCD')->add(\LoginApi::class . ':ValidarUsr');
     
-    $this->put('/', \CDApi::class . ':ModificarUnCD');
+    $this->put('/', \CDApi::class . ':ModificarUnCD')->add(\LoginApi::class . ':ValidarUsr');
 
 })->add($logIn)->add(\LoginApi::class . ':Login');
 
