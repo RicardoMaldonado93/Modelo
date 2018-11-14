@@ -17,14 +17,18 @@ $app = new \Slim\App(["settings" => $config]);
 
 
 
-$logIn = function($response, $request, $next){
+$logIn = function($request, $response, $next){
 
-        $dato = $response->getHeader('token');
+        $dato = $request->getHeader('token');
         $token = $dato[0];
-        var_dump(Token::VerificarToken( $token));
-                    //$response = $next($response, $request);
+
         
-        //return $response;
+        if(!Token::VerificarToken($token))
+            $nresponse = $next($request, $response);
+        else
+            $nresponse = $response->withJson('error',404);
+        
+            return $nresponse;
 };
 
 /*$nivel = function($response, $request, $next){

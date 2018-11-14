@@ -38,22 +38,24 @@ class Token{
       
       try {
 
-        $decodificado = JWT::decode(
-            $token,
-            self::$key,
-            self::$tipoEncriptacion
-            );
+            $decodificado = JWT::decode(
+                $token,
+                self::$key,
+                self::$tipoEncriptacion
+                );
             
         
         } catch (Exception $e) {
             throw $e;
         } 
         
+        
         // si no da error,  verifico los datos de AUD que uso para saber de que lugar viene  
-        if($decodificado->aud !== self::Aud())
-        {
+        if($decodificado->data[0]->{'nombre'} != 'admin'){
             throw new Exception("No es el usuario valido");
         }
+
+       
     }
     
    
