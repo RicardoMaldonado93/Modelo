@@ -13,17 +13,41 @@ $config['addContentLengthHeader'] = false;
 
 $app = new \Slim\App(["settings" => $config]);
 
+
+
+
+
+$logIn = function($response, $request, $next){
+
+        $dato = $response->getHeader('token');
+        $token = $dato[0];
+        var_dump(Token::VerificarToken( $token));
+                    //$response = $next($response, $request);
+        
+        //return $response;
+};
+
+/*$nivel = function($response, $request, $next){
+
+        $token = $response->getHeader('token');
+    
+        if( Token::class . )
+        
+};*/
+
 $app->group('/cds', function(){
 
     $this->get('/traerTodos', \CDApi::class . ':TraerTodos');
 
-    $this->get('/traerUnCD/{id}', \CDApi::class . ':TraerUnCD');
+    $this->get('/{id}', \CDApi::class . ':TraerUnCD');
 
-    $this->post('/agregarUnCD', \CDApi::class . ':AgregarUnCD')->add(LoginApi::class . ':ValidarUsr');
+    $this->post('/', \CDApi::class . ':AgregarUnCD');
 
-    $this->delete('/borrarUnCD/{id}', \CDApi::class . ':BorrarUnCD');
+    $this->delete('/', \CDApi::class . ':BorrarUnCD');
     
-    $this->put('/modificarUnCD/{id}', \CDApi::class . ':ModificarUnCD');
-})->add(LoginApi::class . ':Login');
+    $this->put('/', \CDApi::class . ':ModificarUnCD');
+
+})->add($logIn)->add(\LoginApi::class . ':Login');
+
 $app->run();
 ?>

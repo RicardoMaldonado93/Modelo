@@ -6,8 +6,9 @@ use Firebase\JWT\JWT;
 
 class Token{
 
-    private static $key = "Hitachy93";
+    private static $key = 'Hitachy93';
     private static $aud = null;
+    private static $tipoEncriptacion = ['HS256'];
 
     public static function crearToken($param){
 
@@ -17,6 +18,7 @@ class Token{
             "aud" => self::Aud(),
             "data" => $param,
             "iat" => $hora,
+            "exp" => $hora + 3600,
             "nbf" => 1357000000
         );
         
@@ -27,18 +29,22 @@ class Token{
     
     public static function VerificarToken($token)
     {
+    
         if(empty($token))
-        {
+        {   
             throw new Exception("El token esta vacio.");
         } 
         // las siguientes lineas lanzan una excepcion, de no ser correcto o de haberse terminado el tiempo       
       
       try {
-            $decodificado = JWT::decode(
+
+        $decodificado = JWT::decode(
             $token,
-            self::$claveSecreta,
+            self::$key,
             self::$tipoEncriptacion
-        );
+            );
+            
+        
         } catch (Exception $e) {
             throw $e;
         } 
