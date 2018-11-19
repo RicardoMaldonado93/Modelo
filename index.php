@@ -4,9 +4,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 require_once './vendor/autoload.php';
-require_once './api/CDApi.php';
-require_once './api/LoginApi.php';
-require_once './clases/Token.php';
+require_once './api/UsuarioApi.php';
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
@@ -16,7 +14,7 @@ $app = new \Slim\App(["settings" => $config]);
 
 
 
-
+/*
 $logIn = function($request, $response, $next){
 
         $dato = $request->getHeader('token');
@@ -30,23 +28,15 @@ $logIn = function($request, $response, $next){
         
             return $nresponse;
 };
+*/
+
+$app->group('/api', function(){
 
 
-$app->group('/cds', function(){
+    $this->post('/agregarUsr', \UsuarioApi::class . ':AgregarUsr');
 
-   
 
-    $this->get('/traerTodos', \CDApi::class . ':TraerTodos');
-
-    $this->get('/{id}', \CDApi::class . ':TraerUnCD');
-
-    $this->post('/', \CDApi::class . ':AgregarUnCD')->add(\LoginApi::class . ':ValidarUsr');
-
-    $this->delete('/', \CDApi::class . ':BorrarUnCD')->add(\LoginApi::class . ':ValidarUsr');
-    
-    $this->put('/', \CDApi::class . ':ModificarUnCD')->add(\LoginApi::class . ':ValidarUsr');
-
-})->add($logIn)->add(\LoginApi::class . ':Login');
+});
 
 $app->run();
 ?>
