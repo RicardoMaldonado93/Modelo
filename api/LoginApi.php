@@ -28,45 +28,6 @@ class LoginApi extends Login implements ILogin{
         return $newResponse;
     }
 
-    public static function Auth( $request, $response, $next){
-
-        try{
-
-            $token = $request->getHeader('token');
-            $status = Token::VerificarToken($token[0]);
-
-                if( $status ){
-
-                    $payload =Token::ObtenerData($token[0]);
-
-                    if($payload[0]->{'perfil'} == 'admin')
-                        return $next($request,$response);
-                    else
-                        return $response->withJson('HOLA', 401);
-                }
-                
-        }
-        catch( Exception $e){
-            return $response->withJson($e->getMessage(),401);
-        }
-
-    }
-
-    /*
-    public static function ValidarUsr( $request, $response, $next){
-        
-        $dato = $request->getHeader('token');
-        $token = $dato[0];
-    
-
-        if( Token::ObtenerData($token)[0]->{'nombre'} != 'admin' )
-            $nresponse = $response->withJson('error',404);
-        else
-            $nresponse = $next($request, $response);
-
-        return $nresponse;
-    
-    }*/
 
 
   }

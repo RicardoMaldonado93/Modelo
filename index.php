@@ -6,6 +6,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require_once './vendor/autoload.php';
 require_once './api/UsuarioApi.php';
 require_once './api/LoginApi.php';
+require_once './api/LogApi.php';
 require_once './api/CompraApi.php';
 require_once './clases/MWAuth.php';
 
@@ -14,33 +15,21 @@ $config['addContentLengthHeader'] = false;
 
 $app = new \Slim\App(["settings" => $config]);
 
-
-
-
-/*
-$logIn = function($request, $response, $next){
-
-        $dato = $request->getHeader('token');
-        $token = $dato[0];
-
-        
-        if(!Token::VerificarToken($token))
-            $nresponse = $next($request, $response);
-        else
-            $nresponse = $response->withJson('error',404);
-        
-            return $nresponse;
-};
-*/
-
 $app->group('/api', function(){
 
-
-    $this->post('/usuario', \UsuarioApi::class . ':AgregarUsr');
     $this->post('/login', \loginApi::class . ':Login');
-    $this->get('/usuario', \UsuarioApi::class . ':MostrarUsr')->add(\loginApi::class . ':Auth');
-    $this->post('/compra', \CompraApi::class . ':CargarCompra')->add(\MWAuth::class . ':VerificarUsuario');
 
+    $this->group('/usuario', function(){
+        $this->post('[/]', \UsuarioApi::class . ':AgregarUsr')->add(\LogApi::class . ':Registro');
+        $this->get('[/]', \UsuarioApi::class . ':MostrarUsr')->add(\LogApi::class . ':Registro', \MWAuth::class . ':Auth');
+    });
+    
+    $this->group('/compra', function(){
+        $this->post('[/]', \CompraApi::class . ':CargarCompra')->add(\LogApi::class . ':Registro', \MWAuth::class . ':VerificarUsuario');
+        $this->get('[/]', \CompraApi::Class . ':MostrarListado')->add(\LogApi::class . ':Registro', \MWAuth::class . ':Auth');
+        $this->get('/{marca}', \CompraApi::Class . ':MostrarMarca')->add(\LogApi::class . ':Registro', \MWAuth::class . ':Auth');
+    });
+    
 });
 
 $app->run();

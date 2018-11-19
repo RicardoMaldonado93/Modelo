@@ -73,6 +73,30 @@ class MWAuth
          return $response;  
          
     }
+
+    public static function Auth( $request, $response, $next){
+
+        try{
+
+            $token = $request->getHeader('token');
+            $status = Token::VerificarToken($token[0]);
+
+                if( $status ){
+
+                    $payload =Token::ObtenerData($token[0]);
+
+                    if($payload[0]->{'perfil'} == 'admin')
+                        return $next($request,$response);
+                    else
+                        return $response->withJson('HOLA', 401);
+                }
+                
+        }
+        catch( Exception $e){
+            return $response->withJson($e->getMessage(),401);
+        }
+
+    }
     /*
 	public function VerificarJWT($request, $response, $next) {
          

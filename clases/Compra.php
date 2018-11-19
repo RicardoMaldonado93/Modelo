@@ -29,5 +29,42 @@ class Compra{
 
     }
 
+    public static function Listar(){
+
+        try{
+
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM producto");
+            $consulta->execute();
+
+            return $consulta->fetchAll(PDO::FETCH_CLASS, 'Compra');
+
+        }
+        catch( PDOException $e){
+
+            return "*********** ERROR ***********<br>" . strtoupper($e->getMessage()) . "<br>******************************"; 
+        }
+
+    }
+
+    public static function traerX($marca){
+
+        try{
+
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM producto WHERE marca=:mar");
+            $consulta->bindValue(':mar', $marca , PDO::PARAM_STR);
+            $consulta->execute();
+
+            return $consulta->fetchAll(PDO::FETCH_CLASS, 'Compra');
+
+        }
+        catch( PDOException $e){
+
+            return "*********** ERROR ***********<br>" . strtoupper($e->getMessage()) . "<br>******************************"; 
+        }
+
+    }
+
 }
 ?>
