@@ -14,10 +14,25 @@ class Usuario {
             $consulta->bindValue(':pass', $pass, PDO::PARAM_STR);
 
             if($consulta->execute() == true)
-                return " ======== SE AGREGO CORRECTAMENTE ========<br>";
+                return "======== SE AGREGO CORRECTAMENTE ========";
                 
             else
                 return "*********** ERROR AL AGREGAR REGISTRO ***********";
+        }
+        catch( PDOException $e){
+
+            return "*********** ERROR ***********<br>" . strtoupper($e->getMessage()) . "<br>******************************"; 
+        }
+    }
+
+    public static function mostrarTodos(){
+        try{
+
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuario");
+            $consulta->execute();
+
+            return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
         }
         catch( PDOException $e){
 

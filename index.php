@@ -34,9 +34,9 @@ $logIn = function($request, $response, $next){
 $app->group('/api', function(){
 
 
-    $this->post('/agregarUsr', \UsuarioApi::class . ':AgregarUsr');
+    $this->post('/usuario', \UsuarioApi::class . ':AgregarUsr');
     $this->post('/login', \loginApi::class . ':Login');
-
+    $this->get('/usuario', \UsuarioApi::class . ':MostrarUsr')->add(\loginApi::class . ':Auth');
 
 });
 

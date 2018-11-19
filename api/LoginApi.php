@@ -17,8 +17,8 @@ class LoginApi extends Login implements IApi2{
         if( $login != NULL ){
             
        
-            //$newResponse = $response->withJson(Token::crearToken($login),200);
-            $newResponse = $response->withJson($login,200);
+            $newResponse = $response->withJson(Token::crearToken($login),200);
+            //$newResponse = $response->withJson($login,200);
             //var_dump(Token::crearToken($login));
             //$newResponse= $next( $request, $response);
         }
@@ -28,18 +28,40 @@ class LoginApi extends Login implements IApi2{
         return $newResponse;
     }
 
+    public static function Auth( $request, $response, $next){
+
+        
+        
+        try{
+            $token = $request->getHeader('token');
+        $status = Token::VerificarToken($token[0]);
+            if( $status ){
+                return $next($request,$response);
+            }
+            else
+                return $response->withJson("Hola",401);
+        }
+        catch( Exception $e){
+            return $response->withJson($e->getMessage(),401);
+        }
+
+    }
+
     public static function ValidarUsr( $request, $response, $next){
         
         $dato = $request->getHeader('token');
         $token = $dato[0];
     
-        
+
         if( Token::ObtenerData($token)[0]->{'nombre'} != 'admin' )
             $nresponse = $response->withJson('error',404);
         else
             $nresponse = $next($request, $response);
 
         return $nresponse;
+    
     }
+
+
   }
 ?>
