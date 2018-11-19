@@ -6,6 +6,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require_once './vendor/autoload.php';
 require_once './api/UsuarioApi.php';
 require_once './api/LoginApi.php';
+require_once './api/CompraApi.php';
+require_once './clases/MWAuth.php';
 
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
@@ -37,6 +39,7 @@ $app->group('/api', function(){
     $this->post('/usuario', \UsuarioApi::class . ':AgregarUsr');
     $this->post('/login', \loginApi::class . ':Login');
     $this->get('/usuario', \UsuarioApi::class . ':MostrarUsr')->add(\loginApi::class . ':Auth');
+    $this->post('/compra', \CompraApi::class . ':CargarCompra')->add(\MWAuth::class . ':VerificarUsuario');
 
 });
 

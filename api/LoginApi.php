@@ -1,10 +1,10 @@
 <?php
 
 require_once "./clases/Login.php";
-require_once "./clases/IApi2.php";
+require_once "./clases/ILogin.php";
 require_once './clases/Token.php';
 
-class LoginApi extends Login implements IApi2{
+class LoginApi extends Login implements ILogin{
 
     public static function Login( $request, $response, $next){
         
@@ -30,16 +30,21 @@ class LoginApi extends Login implements IApi2{
 
     public static function Auth( $request, $response, $next){
 
-        
-        
         try{
+
             $token = $request->getHeader('token');
-        $status = Token::VerificarToken($token[0]);
-            if( $status ){
-                return $next($request,$response);
-            }
-            else
-                return $response->withJson("Hola",401);
+            $status = Token::VerificarToken($token[0]);
+
+                if( $status ){
+
+                    $payload =Token::ObtenerData($token[0]);
+
+                    if($payload[0]->{'perfil'} == 'admin')
+                        return $next($request,$response);
+                    else
+                        return $response->withJson('HOLA', 401);
+                }
+                
         }
         catch( Exception $e){
             return $response->withJson($e->getMessage(),401);
@@ -47,6 +52,7 @@ class LoginApi extends Login implements IApi2{
 
     }
 
+    /*
     public static function ValidarUsr( $request, $response, $next){
         
         $dato = $request->getHeader('token');
@@ -60,7 +66,7 @@ class LoginApi extends Login implements IApi2{
 
         return $nresponse;
     
-    }
+    }*/
 
 
   }

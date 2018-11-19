@@ -24,7 +24,6 @@ class UsuarioApi extends Usuario implements IUsuario{
     }
 
     public static function MostrarUsr($request, $response, $args){
-        
         return $response->withJson(Usuario::mostrarTodos(),200);
     }
 }
