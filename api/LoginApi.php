@@ -16,15 +16,14 @@ class LoginApi extends Login implements IApi2{
         
         if( $login != NULL ){
             
-            //$newResponse = $response->withAddedHeader(json_encode(Token::crearToken($login)), 'token');//withJson(Token::crearToken($login),200);
-            //$newResponse = $response->withAddedHeader('asd', 'token');//
-        
-            $newResponse = $response->withJson(Token::crearToken($login),200);
+       
+            //$newResponse = $response->withJson(Token::crearToken($login),200);
+            $newResponse = $response->withJson($login,200);
             //var_dump(Token::crearToken($login));
             //$newResponse= $next( $request, $response);
         }
         else
-            $newResponse = $response->withJson($login,400);
+            $newResponse = $response->withStatus(400);
 
         return $newResponse;
     }

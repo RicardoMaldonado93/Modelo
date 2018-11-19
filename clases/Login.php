@@ -5,25 +5,41 @@ require_once './clases/AccesoDatos.php';
 
 class Login{
 
-    public static function loguear($user, $pass){
+    public static function loguear($email, $pass){
         try{
-            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
-            $consulta= $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuario Where email=:email AND pass=:pass");
-            $verificar= $objetoAccesoDato->RetornarConsulta()
-            $consulta->bindValue(':pass',$pass, PDO::PARAM_STR);
-            if($consulta->execute())
-            
-            if ($consulta->bindValue(':email',$user, PDO::PARAM_STR);)
-               of
-            
-            return$consulta->fetchAll(PDO::FETCH_CLASS, 'Login');
               
+            if( self::verificar('email','usuario',$email) != NULL)
+                if( self::verificar('pass','usuario',$pass) != NULL)
+                    {
+                        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+                        $consulta= $objetoAccesoDato->RetornarConsulta("SELECT * FROM usuario Where email=:email AND pass=:pass");
+                        $consulta->bindValue(':email', $email, PDO::PARAM_STR);
+                        $consulta->bindValue(':pass',$pass, PDO::PARAM_STR);
+                        $consulta->execute();
+                        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Login');
+                    }
+                else
+                throw new PDOException("password invalido!");
+            else
+                throw new PDOException("email no existente!");
  
         
             }
         catch (PDOException $e){
-            echo "*********** ERROR ***********<br>" . strtoupper($e->getMessage()); 
+            echo "*********** ERROR ***********<br><br>" . strtoupper($e->getMessage()); 
         }
+    }
+
+    private static function verificar( $cel, $tab, $param){
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso();
+
+        $verificar= $objetoAccesoDato->RetornarConsulta('SELECT '. $cel . ' ' .'FROM' .' '  . $tab . ' '.  'WHERE' .' ' . $cel . '=:param');
+        $verificar->bindValue(':param', $param, PDO::PARAM_STR);
+        $verificar->execute();
+        
+        return $verificar->fetchAll(PDO::FETCH_CLASS, 'Login');
+
     }
 }
 ?>
