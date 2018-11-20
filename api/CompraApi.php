@@ -13,10 +13,20 @@ class CompraApi extends Compra implements ICompra {
         $precio = $datos['precio'];
         $mar = $datos['marca'];
         $compra = Compra::RegistrarCompra($info, $mar, $mod, $precio);
+        $img = $request->getUploadedFiles();
+        $des = './IMGCompras/';
+        $nombreAnterior = $img['imagen']->getClientFilename();
+        $extension = array_reverse(explode('.', $nombreAnterior));
 
         if( $compra != NULL ){
         
-            $newResponse = $response->withJson($compra,200);
+            if(!file_exists($des))
+            {
+                mkdir($des);
+            }
+
+            $img['imagen']->moveTo($des.$compra.'-'.$info.'.'.$extension[0]);
+            $newResponse = $response->withJson("======== SE AGREGO CORRECTAMENTE ========",200);
         }
         else
             $newResponse = $response->withJson($compra,400);
@@ -52,6 +62,23 @@ class CompraApi extends Compra implements ICompra {
 
         return $newResponse;
 
+    }
+
+    public static function ListarProductos( $request, $response, $args){
+
+        $listadoCompras = Compra::MostrarProductos();
+        $output =array();
+        $array= array();
+
+        foreach($listadoCompras as $compra)
+        {
+            $objeto = array( "Marca" => $compra->marca , "Modelo" => $compra->modelo);
+            //$objeto = "{'marca':"=>$compra->marca,"'modelo':". $compra->modelo."}";
+            array_push($output, array_unique($objeto));
+        }
+
+        $newResponse = $response->withJson($output, 200);
+        return $newResponse;
     }
 }
 ?>

@@ -15,9 +15,10 @@ $config['addContentLengthHeader'] = false;
 
 $app = new \Slim\App(["settings" => $config]);
 
+$app->post('/api/login', \loginApi::class . ':Login');
 $app->group('/api', function(){
 
-    $this->post('/login', \loginApi::class . ':Login');
+   
 
     $this->group('/usuario', function(){
         $this->post('[/]', \UsuarioApi::class . ':AgregarUsr');
@@ -29,6 +30,8 @@ $app->group('/api', function(){
         $this->get('[/]', \CompraApi::Class . ':MostrarListado')->add(\MWAuth::class . ':Auth');
         $this->get('/{marca}', \CompraApi::Class . ':MostrarMarca')->add(\MWAuth::class . ':Auth');
     });
+
+    $this->get('/productos', \CompraApi::class . ':ListarProductos');
     
 })->add(\LogApi::class . ':Registro');
 

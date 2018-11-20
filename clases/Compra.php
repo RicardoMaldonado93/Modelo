@@ -18,7 +18,9 @@ class Compra{
             $consulta->bindValue(':fCom', date ("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             if($consulta->execute() == true)
-                return "======== SE AGREGO CORRECTAMENTE ========";
+
+                return $objetoAccesoDato->RetornarUltimoIdInsertado();
+               // return "======== SE AGREGO CORRECTAMENTE ========";
                 
             else
                 return "*********** ERROR AL AGREGAR REGISTRO ***********";
@@ -55,6 +57,24 @@ class Compra{
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
             $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM producto WHERE marca=:mar");
             $consulta->bindValue(':mar', $marca , PDO::PARAM_STR);
+            $consulta->execute();
+
+            return $consulta->fetchAll(PDO::FETCH_CLASS, 'Compra');
+
+        }
+        catch( PDOException $e){
+
+            return "*********** ERROR ***********<br>" . strtoupper($e->getMessage()) . "<br>******************************"; 
+        }
+
+    }
+
+    public static function MostrarProductos(){
+        
+        try{
+
+            $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+            $consulta = $objetoAccesoDato->RetornarConsulta("SELECT marca, modelo FROM producto");
             $consulta->execute();
 
             return $consulta->fetchAll(PDO::FETCH_CLASS, 'Compra');

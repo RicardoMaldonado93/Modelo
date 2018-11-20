@@ -7,23 +7,31 @@ class LogApi extends Log implements ILog{
 
     public static function Registro($request, $response, $next){
        
-        $token = $request->getHeader('token');
-        $status = Token::VerificarToken($token[0]);
+        try{
+            $token = $request->getHeader('token');
+            $status = Token::VerificarToken($token[0]);
 
-            if( $status ){
+                if( $status ){
 
-                $payload =Token::ObtenerData($token[0]);
-                $usr = $payload[0]->{'perfil'};
-                $met = $request->getMethod();
-                $ruta = $request->getUri()->getPath();
-                Log::Registrar($usr, $met, $ruta);
+                    $payload =Token::ObtenerData($token[0]);
+                    $usr = $payload[0]->{'perfil'};
+                    $met = $request->getMethod();
+                    $ruta = $request->getUri()->getPath();
+                    Log::Registrar($usr, $met, $ruta);
 
-                
-                
-            }
-        
-        return $next($request,$response);
+                    
+                    
+                }
             
+            return $next($request,$response);
+                
+        }
+
+        catch(Exception $e){
+
+            return $response->withJson($e->getMessage(),400);
+
+        }
     }
 }
 ?>
