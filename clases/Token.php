@@ -34,7 +34,7 @@ class Token{
         {   
             throw new Exception("El token esta vacio.");
         } 
-        // las siguientes lineas lanzan una excepcion, de no ser correcto o de haberse terminado el tiempo       
+
       
       try {
 
@@ -44,24 +44,16 @@ class Token{
                                             self::$tipoEncriptacion
                                         );
             
-       
-        
-        
-        // si no da error,  verifico los datos de AUD que uso para saber de que lugar viene  
-        /*if($decodificado->data[0]->{'perfil'} != 'admin')
-            return false;
-
-        else 
-            return true;*/
 
             if ( $decodificado ->aud  !==  self :: Aud ()){
-                throw  new  excepción ( " No es el usuario valido " );
+                throw  new  excepcion ( " No es el usuario valido " );
             }
             
             else
                 return true;
              
         } catch (Exception $e) {
+            
             throw new Exception("*********** ERROR ***********<br>" . strtoupper($e->getMessage()));
     
         } 

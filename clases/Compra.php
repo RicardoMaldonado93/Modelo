@@ -7,7 +7,8 @@ class Compra{
     public static function RegistrarCompra($datos, $marca, $modelo, $precio){
 
         try{
-
+            
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO producto (datos, marca, modelo, precio, fechaCompra) VALUES (:dat, :mar, :mod, :pre, :fCom)");
             $consulta->bindValue(':dat', $datos, PDO::PARAM_STR);

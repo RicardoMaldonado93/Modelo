@@ -7,6 +7,7 @@ class Log{
     public static function Registrar($usr, $metodo, $ruta){
         try{
 
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
             $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
             $consulta = $objetoAccesoDato->RetornarConsulta("INSERT INTO registro (usuario, metodo, ruta, hora) VALUES (:usr,:met,:ruta,:fecha)");
             $consulta->bindValue(':usr', $usr , PDO::PARAM_STR);

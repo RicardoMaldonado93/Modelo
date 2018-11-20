@@ -20,17 +20,17 @@ $app->group('/api', function(){
     $this->post('/login', \loginApi::class . ':Login');
 
     $this->group('/usuario', function(){
-        $this->post('[/]', \UsuarioApi::class . ':AgregarUsr')->add(\LogApi::class . ':Registro');
-        $this->get('[/]', \UsuarioApi::class . ':MostrarUsr')->add(\LogApi::class . ':Registro', \MWAuth::class . ':Auth');
+        $this->post('[/]', \UsuarioApi::class . ':AgregarUsr');
+        $this->get('[/]', \UsuarioApi::class . ':MostrarUsr')->add( \MWAuth::class . ':Auth');
     });
     
     $this->group('/compra', function(){
-        $this->post('[/]', \CompraApi::class . ':CargarCompra')->add(\LogApi::class . ':Registro', \MWAuth::class . ':VerificarUsuario');
-        $this->get('[/]', \CompraApi::Class . ':MostrarListado')->add(\LogApi::class . ':Registro', \MWAuth::class . ':Auth');
-        $this->get('/{marca}', \CompraApi::Class . ':MostrarMarca')->add(\LogApi::class . ':Registro', \MWAuth::class . ':Auth');
+        $this->post('[/]', \CompraApi::class . ':CargarCompra')->add(\MWAuth::class . ':VerificarUsuario');
+        $this->get('[/]', \CompraApi::Class . ':MostrarListado')->add(\MWAuth::class . ':Auth');
+        $this->get('/{marca}', \CompraApi::Class . ':MostrarMarca')->add(\MWAuth::class . ':Auth');
     });
     
-});
+})->add(\LogApi::class . ':Registro');
 
 $app->run();
 ?>

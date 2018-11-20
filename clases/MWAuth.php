@@ -84,7 +84,7 @@ class MWAuth
                 if( $status ){
 
                     $payload =Token::ObtenerData($token[0]);
-
+				
                     if($payload[0]->{'perfil'} == 'admin')
                         return $next($request,$response);
                     else
